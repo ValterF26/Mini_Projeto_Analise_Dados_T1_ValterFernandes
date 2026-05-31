@@ -10,4 +10,20 @@ import matplotlib.pyplot as plt
 df = pd.read_csv('Base_Varejo.csv', sep=';')
 
 print(df.head(5))
-print(df.describe())
+
+# Removendo colunas sem informações ou irrelevantes
+
+df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+df.head().tail()
+
+# Mostra a quantidade de linhas e colunas
+
+num_registros, num_colunas = df.shape
+print(f"Número de Registros (Linhas): {num_registros}")
+print(f"Número de Colunas: {num_colunas}")
+print("-" * 50)
+
+# Mostra os tipos de dados de cada coluna
+
+print("Tipos de dados de cada coluna:")
+print(df.dtypes)
