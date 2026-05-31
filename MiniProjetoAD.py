@@ -105,6 +105,34 @@ print("Tipo de dado da coluna DATA após a conversão:")
 print(df['DATA'].dtypes)
 print("\nPrimeiras linhas da coluna convertida:")
 print(df['DATA'].head())
+
+# Gerando estatísticas na coluna número de filhos do cliente
+
+# Nota: Com base na estrutura do arquivo, a coluna é 'CL_FHL'
+
+coluna_filhos = df['CL_FHL']
+
+# 3. Calcular as estatísticas descritivas
+
+estatisticas = {
+    'Contagem (N)': coluna_filhos.count(),
+    'Média': coluna_filhos.mean(),
+    'Mediana': coluna_filhos.median(),
+    'Moda': coluna_filhos.mode()[0],  # .mode() retorna uma Serie, pegamos o primeiro valor
+    'Desvio Padrão': coluna_filhos.std(),
+    'Mínimo': coluna_filhos.min(),
+    '25% (1º Quartil)': coluna_filhos.quantile(0.25),
+    '50% (2º Quartil/Mediana)': coluna_filhos.quantile(0.50),
+    '75% (3º Quartil)': coluna_filhos.quantile(0.75),
+    'Máximo': coluna_filhos.max()
+}
+
+# 4. Transformar em um DataFrame para exibir de forma organizada
+
+df_estatisticas = pd.DataFrame.from_dict(estatisticas, orient='index', columns=['Valor'])
+
+print("--- ESTATÍSTICAS DESCRITIVAS: NÚMERO DE FILHOS (CL_FHL) ---")
+print(df_estatisticas.round(2)) # Limita as casas decimais para facilitar a leitura
     
 
 
