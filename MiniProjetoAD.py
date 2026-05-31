@@ -133,6 +133,34 @@ df_estatisticas = pd.DataFrame.from_dict(estatisticas, orient='index', columns=[
 
 print("--- ESTATÍSTICAS DESCRITIVAS: NÚMERO DE FILHOS (CL_FHL) ---")
 print(df_estatisticas.round(2)) # Limita as casas decimais para facilitar a leitura
+
+# Explorando padrões de agrupamento utilizando pivot e groupby
+
+print("--- ANÁLISE 1: Gênero vs. Categoria de Produto (Total de Itens Vendidos) ---")
+
+# Usamos pivot_table para cruzar as categorias com o gênero dos clientes
+# Contamos o 'PR_ID' para saber a quantidade de produtos levados
+
+pivot_genero_cat = pd.pivot_table(
+    df,
+    values='PR_ID',
+    index='PR_CAT',
+    columns='CL_GENERO',
+    aggfunc='count',
+    fill_value=0
+)
+
+# Adicionar uma coluna de total para facilitar a identificação de quem compra mais
+
+pivot_genero_cat['TOTAL_ITENS'] = pivot_genero_cat['F'] + pivot_genero_cat['M']
+print(pivot_genero_cat.sort_values(by='TOTAL_ITENS', ascending=False))
+
+
+print("\n" + "="*60 + "\n")
+
+# Resumo rápido da coluna filhos dos clientesusando describe, mostra contagem, média, desvio padrão, mínimo, quartis (25%, 50%, 75%) e máximo
+
+print(df['CL_FHL'].describe())
     
 
 
