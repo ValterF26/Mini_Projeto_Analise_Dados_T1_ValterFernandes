@@ -133,6 +133,11 @@ df_estatisticas = pd.DataFrame.from_dict(estatisticas, orient='index', columns=[
 
 print("--- ESTATÍSTICAS DESCRITIVAS: NÚMERO DE FILHOS (CL_FHL) ---")
 print(df_estatisticas.round(2)) # Limita as casas decimais para facilitar a leitura
+
+
+# Gerando e salvando arquivo csv limpo e tratado
+
+df.to_csv('Base_Varejo_limpo.csv', index=False, encoding='utf-8')
     
 
 
