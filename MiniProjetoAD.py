@@ -30,6 +30,7 @@ print("Tipos de dados de cada coluna:")
 print(df.dtypes)
 
 # Usando condicionais para limpeza do Dataset
+
 def limpar_texto(texto):
     """
     Remove espaços extras, caracteres especiais indesejados
@@ -58,24 +59,52 @@ def limpar_inteiro(valor):
         return None
     return int(apenas_numeros)
 
-def limpar_decimal(valor):
-    """
-    Trata strings com formatos de moeda/decimais (ex: '1.250,50' ou '1250.50')
-    e converte para Float.
-    """
-    if pd.isna(valor):
-        return None
+
+# Verificando valores nulos
+
+# --- ANÁLISE 1: VALORES NULOS ---
+
+print("\n[1] Verificação de Valores Nulos por Coluna:")
+valores_nulos = df.isnull().sum()
+print(valores_nulos[valores_nulos > 0])
+
+# Verificando Duplicatas
+
+# --- ANÁLISE 2: DUPLICATAS ---
+
+print("\n[2] Verificação de Linhas Duplicadas:")
+total_duplicadas = df.duplicated().sum()
+print(f"Total de linhas completamente duplicadas: {total_duplicadas}")
+
+# Remover as linhas duplicadas mantendo apenas a primeira ocorrência
+
+df = df.drop_duplicates()
+
+# Aplicando datetime para padronizar inconsistências de formatos de datas
+
+# --- ANÁLISE 3: INCONSISTÊNCIAS DE FORMATO (DATAS) ---
+
+print("\n[3] Verificação de Inconsistências (Datas):")
+
+# Tenta converter para data. O que não for data válida virará 'NaT' (Not a Time)
+
+datas_convertidas = pd.to_datetime(df['DATA'], format='%d/%m/%Y', errors='coerce')
+erros_data = datas_convertidas.isnull().sum()
+print(f"Registros com datas inválidas ou corrompidas: {erros_data}")
+
+# Conversão de formato de datas
+# --- CONVERSÃO DA COLUNA DATA ---
+# format='%d/%m/%Y': Indica o padrão Dia/Mês/Ano de 4 dígitos
+# errors='coerce': Se houver erro de digitação na data, transforma em nulo em vez de quebrar o código
+
+df['DATA'] = pd.to_datetime(df['DATA'], format='%d/%m/%Y', errors='coerce')
+
+# --- VERIFICAÇÃO ---
+
+print("Tipo de dado da coluna DATA após a conversão:")
+print(df['DATA'].dtypes)
+print("\nPrimeiras linhas da coluna convertida:")
+print(df['DATA'].head())
     
-    valor_str = str(valor).strip()
-    
-    # Se o valor contiver tanto ponto quanto vírgula (ex: 1.234,56)
-    if '.' in valor_str and ',' in valor_str:
-        valor_str = valor_str.replace('.', '').replace(',', '.')
-    # Se contiver apenas vírgula como separador decimal (ex: 1234,56)
-    elif ',' in valor_str:
-        valor_str = valor_str.replace(',', '.')
-        
-    try:
-        return float(valor_str)
-    except ValueError:
-        return None
+
+
