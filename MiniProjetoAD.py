@@ -135,6 +135,39 @@ print("--- ESTATÍSTICAS DESCRITIVAS: NÚMERO DE FILHOS (CL_FHL) ---")
 print(df_estatisticas.round(2)) # Limita as casas decimais para facilitar a leitura
 
 
+# Explorando padrões de agrupamento utilizando pivot e groupby
+
+print("--- ANÁLISE 1: Gênero vs. Categoria de Produto (Total de Itens Vendidos) ---")
+# Usamos pivot_table para cruzar as categorias com o gênero dos clientes
+# Contamos o 'PR_ID' para saber a quantidade de produtos levados
+pivot_genero_cat = pd.pivot_table(
+    df,
+    values='PR_ID',
+    index='PR_CAT',
+    columns='CL_GENERO',
+    aggfunc='count',
+    fill_value=0
+)
+
+# Adicionar uma coluna de total para facilitar a identificação de quem compra mais
+pivot_genero_cat['TOTAL_ITENS'] = pivot_genero_cat['F'] + pivot_genero_cat['M']
+print(pivot_genero_cat.sort_values(by='TOTAL_ITENS', ascending=False))
+
+
+print("\n" + "="*60 + "\n")
+
+print("--- ANÁLISE 2: Gênero vs. Segmento do Cliente (Total de Compras/Cupons Únicos) ---")
+# Um cliente levar 10 itens no mesmo cupom não significa que ele foi à loja 10 vezes.
+# Por isso, usamos .nunique() no 'CO_ID' (Cupom) para contar compras reais/visitas.
+groupby_compras = df.groupby(['CL_GENERO', 'CL_SEG'])['CO_ID'].nunique().reset_index()
+
+# Renomeando a coluna para ficar claro o resultado
+groupby_compras.rename(columns={'CO_ID': 'QTD_COMPRAS_UNICAS'}, inplace=True)
+
+# Ordenando pelas maiores frequências de compra
+print(groupby_compras.sort_values(by='QTD_COMPRAS_UNICAS', ascending=False))
+
+
 # Gerando e salvando arquivo csv limpo e tratado
 
 df.to_csv('Base_Varejo_limpo.csv', index=False, encoding='utf-8')
