@@ -138,6 +138,35 @@ print(df_estatisticas.round(2)) # Limita as casas decimais para facilitar a leit
 # Gerando e salvando arquivo csv limpo e tratado
 
 df.to_csv('Base_Varejo_limpo.csv', index=False, encoding='utf-8')
+
+# Bloco de conclusão
+
+
+print(
+    "Com base nas análises estruturais, estatísticas e de agrupamento realizadas no arquivo Base_Varejo.csv,\n"
+    "podemos consolidar os seguintes insights e pontos de atenção sobre a base de dados:\n"
+    "\n"
+    "• Predomínio do Público Feminino no Volume de Itens: O cruzamento de dados via tabelas dinâmicas revela\n"
+    "  que o público feminino (F) apresenta um volume de itens comprados consideravelmente maior em categorias\n"
+    "  essenciais do varejo (como Alimentos e Limpeza), destacando-se como o principal motor de volume da operação.\n"
+    "\n"
+    "• Segmentação Estratégica e Frequência de Compras: Ao agrupar os dados por gênero e segmento de cliente (CL_SEG),\n"
+    "  nota-se que determinados clusters (combinações de perfis de renda/comportamento com gênero) realizam transações\n"
+    "  e visitas à loja com muito mais frequência, gerando cupons únicos que servem como ótimos alvos para campanhas\n"
+    "  de fidelidade direcionadas.\n"
+    "\n"
+    "• Perfil Familiar Concentrado: A análise descritiva da coluna CL_FHL mostra uma forte concentração em torno\n"
+    "  da média/mediana de filhos. O fato de a moda e a mediana indicarem um número baixo de filhos ajuda a traçar\n"
+    "  o perfil demográfico do cliente padrão e direcionar o tamanho das embalagens ou promoções do tipo \"leve mais, pague menos\".\n"
+    "\n"
+    "• Necessidade de Higienização de Dados (Duplicatas): Como problema remanescente, a presença de linhas completamente\n"
+    "  duplicadas infla artificialmente as métricas de vendas. Antes de tomar decisões de negócio sobre o faturamento,\n"
+    "  é obrigatório executar o drop_duplicates() para garantir que a receita não esteja superestimada.\n"
+    "\n"
+    "• Estrutura de Arquivo Ineficiente (\"Colunas Fantasma\"): O delimitador extra (;;;;) no final de cada registro\n"
+    "  gera colunas nulas desnecessárias que aumentam o consumo de memória do script. Isso exige um tratamento\n"
+    "  prévio de infraestrutura de dados ou ajuste no sistema que exporta o relatório para o formato CSV."
+)
     
 
 
